@@ -16,7 +16,7 @@ root    = Root(session)
 svc     = (root
            .databases["DB"]
            .schemas["SCHEMA"]
-           .cortex_search_services["S7_CPDP_USER_SEARCH_CS"])
+           .cortex_search_services["USER_SEARCH_CS"])
 
 # ── urgency colour map ────────────────────────────────────────────────────────
 URGENCY_COLOUR = {
@@ -59,7 +59,7 @@ def load_summary():
             SUM(IFF(has_rsa_public_key,            1, 0))           AS RSA_ENABLED,
             SUM(IFF(URGENCY_LEVEL IN ('OVERDUE','CRITICAL'),1,0)) AS URGENT_RSA,
             SUM(IFF(PASSWORD_LAST_SET_TIME IS NULL, 1, 0))      AS PWD_NEVER_SET
-        FROM EDW_DEV.STG.S6_CPDP_SERVICE_USER_SEARCH
+        FROM DB.SCHEMA.SERVICE_USER_SEARCH
     """).to_pandas().iloc[0]
 
 s = load_summary()

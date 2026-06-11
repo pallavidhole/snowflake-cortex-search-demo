@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW DB.SCHEMA.S6_CPDP_SERVICE_USER_SEARCH AS
+CREATE OR REPLACE VIEW DB.SCHEMA.SERVICE_USER_SEARCH AS
 select name, created_on,LAST_SUCCESS_LOGIN, PASSWORD_LAST_SET_TIME,
 display_name, email,default_warehouse, default_role,has_rsa_public_key,
 case when has_rsa_public_key = 'TRUE' then 'STREAMLIT'
@@ -33,4 +33,5 @@ CASE
         COALESCE('password last updated ' || CAST(CAST(PASSWORD_LAST_SET_TIME AS DATE) AS VARCHAR), 'password never updated'),
         COALESCE('RSA key created ' || CAST(PASSWORD_LAST_SET_TIME AS VARCHAR), 'no RSA key')
     )    AS SEARCH_TEXT
-from ops.prs.users where type not in ('PERSON')
+from sf.information_schema.users --metadata table with all user information
+        where type not in ('PERSON')
